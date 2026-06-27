@@ -611,7 +611,7 @@ export default function Home() {
                 <div />
               </div>
               <iframe
-                src="https://cal.com/mustafa-caylak-aao3px"
+                src="https://cal.com/erbil-kiziltan-hw7xw6"
                 width="100%"
                 height="620"
                 frameBorder="0"
@@ -715,7 +715,7 @@ export default function Home() {
             <div className={styles.footerCol}>
               <h5>Hızlı Erişim</h5>
               <a href="https://www.instagram.com/erbil.kzltan/" target="_blank" rel="noopener noreferrer">Instagram</a>
-              <a href="https://cal.com/mustafa-caylak-aao3px" target="_blank" rel="noopener noreferrer">Çevrimiçi Randevu</a>
+              <a href="https://cal.com/erbil-kiziltan-hw7xw6" target="_blank" rel="noopener noreferrer">Çevrimiçi Randevu</a>
             </div>
           </div>
         </div>
