@@ -9,13 +9,24 @@
   --color-text-secondary: #a3a3a3;
   --color-text-muted: #737373;
   
-  /* Accent colors (Gold/Bronze) */
+  /* Accent colors (Gold/Bronze — default/erkek palette) */
   --color-accent: #c5a059;
   --color-accent-hover: #e0bb73;
   --color-accent-muted: rgba(197, 160, 89, 0.2);
 
   /* Border and Dividers */
   --color-border: #262626;
+
+  /* 21st.dev glow variables (default/erkek) */
+  --glow-1: rgba(197, 160, 89, 0.18);
+  --glow-2: rgba(255, 220, 140, 0.1);
+  --glow-3: rgba(160, 120, 60, 0.08);
+
+  /* Card radius & hover (default/erkek) */
+  --border-radius-card: 8px;
+  --card-hover-transform: translateY(-4px) scale(1.015);
+  --card-hover-shadow: 0 14px 36px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(197, 160, 89, 0.12);
+  --card-transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Fonts */
   --font-primary: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -80,16 +91,59 @@ p {
   color: var(--color-bg);
 }
 
-/* Gender-Specific Themes */
+/* ─── Gender-Specific Themes ──────────────────────────
+   21st.dev mouse-spotlight glow, card radii, and 
+   gender-differentiated hover animations
+──────────────────────────────────────────────────── */
+
 .themeKadin {
-  --color-accent: #e5979c; /* Rose Gold / Elegant Pinkish Accent */
-  --color-accent-hover: #f1b3b7;
-  --color-accent-muted: rgba(229, 151, 156, 0.15);
+  /* Background palette */
+  --color-bg: #160a0f;       /* Deep warm burgundy/rose dark */
+  --color-surface: #221218;
+  --color-surface-hover: #2e1a22;
+  --color-border: #382029;
+
+  /* Accent — Rose Gold */
+  --color-accent: #f0a8b0;
+  --color-accent-hover: #fcd5d9;
+  --color-accent-muted: rgba(240, 168, 176, 0.2);
+
+  /* 21st.dev hero glow colours (More feminine, higher opacity for mesh gradient effect) */
+  --glow-1: rgba(240, 168, 176, 0.35); /* Rose pink */
+  --glow-2: rgba(200, 110, 220, 0.25); /* Soft amethyst */
+  --glow-3: rgba(255, 180, 140, 0.30); /* Peach / Warm champagne */
+
+  /* Card radius — soft, feminine curves */
+  --border-radius-card: 18px;
+
+  /* Kadın hover — elegant floating spring animation */
+  --card-hover-transform: translateY(-10px);
+  --card-hover-shadow: 0 24px 56px rgba(229, 151, 156, 0.22), 0 0 0 1px rgba(229, 151, 156, 0.14);
+  --card-transition: all 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .themeErkek {
-  --color-accent: #c5a059; /* Classic Gold/Bronze Accent */
+  /* Background palette */
+  --color-bg: #080808;       /* Classic pure dark */
+  --color-surface: #121212;
+  --color-surface-hover: #1c1c1c;
+  --color-border: #222222;
+
+  /* Accent — Classic Gold/Bronze */
+  --color-accent: #c5a059;
   --color-accent-hover: #e0bb73;
   --color-accent-muted: rgba(197, 160, 89, 0.15);
-}
 
+  /* 21st.dev hero glow colours */
+  --glow-1: rgba(197, 160, 89, 0.18);
+  --glow-2: rgba(255, 220, 140, 0.1);
+  --glow-3: rgba(160, 120, 60, 0.08);
+
+  /* Card radius — sharp, masculine edges */
+  --border-radius-card: 8px;
+
+  /* Erkek hover — precise, sharp zoom */
+  --card-hover-transform: translateY(-4px) scale(1.018);
+  --card-hover-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(197, 160, 89, 0.14);
+  --card-transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}

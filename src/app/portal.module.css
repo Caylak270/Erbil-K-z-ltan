@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════
-   PORTAL (SPLIT SCREEN) STYLES
+   PREMIUM PORTAL — 21st.dev Layout Slot tarzı
+   İki yarı: Tam ekran fotoğraf + metin katmanı
 ═══════════════════════════════════════════════════════ */
 
 .container {
@@ -7,14 +8,33 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: var(--color-bg);
+  background: #000;
   position: relative;
+  font-family: var(--font-primary);
 }
 
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
   }
+}
+
+/* ─── TEK BÖLÜCÜ ÇİZGİSİ (Orta) ─── */
+.container::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  bottom: 10%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.15) 30%, rgba(255,255,255,0.15) 70%, transparent);
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.container:has(.half:hover)::after {
+  opacity: 0;
 }
 
 /* ─── HALVES ─── */
@@ -26,197 +46,506 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: flex 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: flex 0.9s cubic-bezier(0.25, 1, 0.25, 1),
+              filter 0.6s ease,
+              opacity 0.6s ease;
   text-decoration: none;
   overflow: hidden;
 }
 
+.container:has(.half:hover) .half:not(:hover) {
+  flex: 0.7;
+  filter: grayscale(60%) brightness(0.4);
+}
+
 .half:hover {
-  flex: 1.25;
+  flex: 1.3;
 }
 
 @media (max-width: 768px) {
-  .half:hover {
-    flex: 1.15;
-  }
+  .half:hover { flex: 1.15; }
+  .container:has(.half:hover) .half:not(:hover) { flex: 0.85; }
 }
 
+/* ─── ARKA PLAN FOTOĞRAF KATMANLARI ─── */
 .kadinHalf {
-  background-color: #1a1012; /* Dark cherry/plum base */
+  background: #0c0508;
 }
 
 .erkekHalf {
-  background-color: #0f1115; /* Dark slate base */
+  background: #050608;
 }
 
-/* ─── BACKGROUND GLOWS ─── */
+/* Kadın — tam ekran fotoğraf efekti (CSS Gradient ile simüle, gerçek foto yerine) */
+.kadinHalf::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255,105,180,0.25) 0%, rgba(138,43,226,0.2) 40%, rgba(72,217,255,0.1) 100%);
+  z-index: 0;
+  transition: opacity 1s ease;
+  animation: kadinBg 14s ease-in-out infinite alternate;
+}
+
+@keyframes kadinBg {
+  0%   { background-position: 0% 50%; opacity: 0.8; }
+  50%  { opacity: 1; }
+  100% { background-position: 100% 50%; opacity: 0.85; }
+}
+
+/* Erkek — tam ekran fotoğraf efekti */
+.erkekHalf::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(197,160,89,0.2) 0%, rgba(100,80,40,0.25) 50%, rgba(30,30,30,0.3) 100%);
+  z-index: 0;
+  transition: opacity 1s ease;
+  animation: erkekBg 16s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes erkekBg {
+  0%   { opacity: 0.7; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.03); }
+}
+
+/* ─── GLOW (Büyük yumuşak renk bulutu) ─── */
 .glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
-  transition: opacity 0.7s ease, transform 0.7s ease;
-  z-index: 0;
+  filter: blur(100px);
+  opacity: 0.6;
+  transition: opacity 1.2s ease, transform 1.5s cubic-bezier(0.25, 1, 0.25, 1);
+  z-index: 1;
   pointer-events: none;
 }
 
 .kadinHalf .glow {
-  background: radial-gradient(circle, rgba(229,151,156,0.5) 0%, rgba(229,151,156,0) 70%);
-  width: 600px;
-  height: 600px;
+  background: radial-gradient(circle,
+    rgba(255,105,180,0.45) 0%,
+    rgba(138,43,226,0.25) 45%,
+    transparent 75%);
+  width: 90vw;
+  height: 90vw;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
+  transform: translate(-50%, -50%) scale(0.85);
+  animation: glowKadin 15s ease-in-out infinite alternate;
+}
+
+@keyframes glowKadin {
+  0%   { transform: translate(-50%, -50%) scale(0.85) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) scale(1.1) rotate(8deg); }
 }
 
 .erkekHalf .glow {
-  background: radial-gradient(circle, rgba(197,160,89,0.4) 0%, rgba(197,160,89,0) 70%);
-  width: 600px;
-  height: 600px;
+  background: radial-gradient(circle,
+    rgba(197,160,89,0.4) 0%,
+    rgba(120,90,40,0.2) 45%,
+    transparent 75%);
+  width: 90vw;
+  height: 90vw;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
+  transform: translate(-50%, -50%) scale(0.85);
+  animation: glowErkek 18s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes glowErkek {
+  0%   { transform: translate(-50%, -50%) scale(0.85) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) scale(1.1) rotate(-6deg); }
 }
 
 .half:hover .glow {
-  opacity: 0.7;
-  transform: translate(-50%, -50%) scale(1.1);
+  opacity: 0.85;
+  filter: blur(70px);
 }
 
+/* ─── NOISE OVERLAY ─── */
 .noise {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-  z-index: 1;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+  z-index: 5;
   pointer-events: none;
+  mix-blend-mode: overlay;
 }
 
 /* ─── CONTENT ─── */
 .content {
   position: relative;
-  z-index: 2;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding: 2rem;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.7s cubic-bezier(0.25, 1, 0.25, 1),
+              opacity 0.5s ease;
 }
 
 .half:hover .content {
-  transform: scale(1.05);
+  transform: scale(1.06) translateY(-12px);
 }
 
+/* ─── BAŞLIK ─── */
 .title {
-  font-size: 4rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.5rem;
-  color: var(--color-text-primary);
+  font-size: clamp(3.5rem, 7vw, 7rem);
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  margin-bottom: 0.6rem;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .kadinHalf .title {
-  color: #e5979c;
+  background: linear-gradient(135deg, #ffffff 0%, #ffb6c1 40%, #ff69b4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 40px rgba(255,105,180,0.4));
 }
 
 .erkekHalf .title {
-  color: #c5a059;
+  background: linear-gradient(135deg, #ffffff 0%, #e8d5a0 40%, #c5a059 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 40px rgba(197,160,89,0.4));
 }
 
+/* ─── ALTYAZI ─── */
 .subtitle {
-  font-size: 1.1rem;
-  color: var(--color-text-secondary);
-  margin-bottom: 2rem;
+  font-size: clamp(0.8rem, 1.2vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 3rem;
   font-weight: 300;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
+/* ─── BUTON (Pill — Glassmorphism) ─── */
 .button {
-  padding: 1rem 2.5rem;
-  border-radius: 30px;
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 0.05em;
+  padding: 1rem 2.8rem;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.25, 1);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+/* İnce parlak kenar */
+.button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: border-color 0.4s ease;
+}
+
+.button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
+  transition: opacity 0.4s ease;
 }
 
 .kadinHalf .button {
-  background: rgba(229, 151, 156, 0.1);
-  color: #e5979c;
-  border: 1px solid rgba(229, 151, 156, 0.3);
+  background: rgba(255, 105, 180, 0.08);
+  box-shadow: 0 8px 32px rgba(255, 105, 180, 0.15), inset 0 1px 0 rgba(255,255,255,0.1);
 }
+
 .kadinHalf:hover .button {
-  background: rgba(229, 151, 156, 0.2);
-  border-color: rgba(229, 151, 156, 0.6);
-  box-shadow: 0 0 20px rgba(229, 151, 156, 0.2);
+  background: rgba(255, 105, 180, 0.2);
+  box-shadow: 0 16px 50px rgba(255, 105, 180, 0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+  transform: translateY(-3px);
+}
+
+.kadinHalf:hover .button::before {
+  border-color: rgba(255, 105, 180, 0.5);
 }
 
 .erkekHalf .button {
-  background: rgba(197, 160, 89, 0.1);
-  color: #c5a059;
-  border: 1px solid rgba(197, 160, 89, 0.3);
+  background: rgba(197, 160, 89, 0.08);
+  box-shadow: 0 8px 32px rgba(197, 160, 89, 0.15), inset 0 1px 0 rgba(255,255,255,0.1);
 }
+
 .erkekHalf:hover .button {
   background: rgba(197, 160, 89, 0.2);
-  border-color: rgba(197, 160, 89, 0.6);
-  box-shadow: 0 0 20px rgba(197, 160, 89, 0.2);
+  box-shadow: 0 16px 50px rgba(197, 160, 89, 0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+  transform: translateY(-3px);
 }
 
-@media (max-width: 768px) {
-  .title {
-    font-size: 3rem;
-  }
-  .subtitle {
-    font-size: 0.95rem;
-  }
+.erkekHalf:hover .button::before {
+  border-color: rgba(197, 160, 89, 0.5);
 }
 
-/* ─── CENTER LOGO ─── */
+/* ─── ARROW İKON (Buton içi) ─── */
+.buttonArrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.25, 1);
+  opacity: 0.8;
+}
+
+.half:hover .buttonArrow {
+  transform: translateX(4px);
+  opacity: 1;
+}
+
+/* ─── ALT HINT: "hover to explore" gibi ─── */
+.hintLabel {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  z-index: 10;
+  transition: opacity 0.4s ease;
+  white-space: nowrap;
+}
+
+.half:hover .hintLabel {
+  opacity: 0;
+}
+
+/* ─── CENTER LOGO (Glassmorphism) ─── */
 .centerLogo {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 10;
+  z-index: 30;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(10, 10, 10, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 1.5rem 2.5rem;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  pointer-events: none; /* Let clicks pass through to halves */
+  background: rgba(5, 5, 5, 0.5);
+  backdrop-filter: blur(30px) saturate(150%);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
+  padding: 1.8rem 3rem;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 0 0 1px rgba(0,0,0,0.3);
+  pointer-events: none;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.container:has(.half:hover) .centerLogo {
+  transform: translate(-50%, -50%) scale(0.9);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  opacity: 0.7;
 }
 
 .logoText {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 800;
-  letter-spacing: 4px;
-  color: var(--color-text-primary);
-  margin-bottom: 4px;
+  letter-spacing: 0.22em;
+  color: #fff;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 15px rgba(0,0,0,0.6);
+  text-transform: uppercase;
 }
 
 .logoSubtitle {
-  font-size: 0.7rem;
-  letter-spacing: 3px;
-  color: var(--color-text-secondary);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
 }
 
 @media (max-width: 768px) {
   .centerLogo {
-    padding: 1rem 1.5rem;
+    padding: 1.2rem 2rem;
   }
   .logoText {
     font-size: 1.2rem;
+    letter-spacing: 0.15em;
+  }
+  .hintLabel {
+    display: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────
+   FOTOĞRAF KOLAJI (Portal split-screen)
+───────────────────────────────────────────────────── */
+
+.photoLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.photoLayerMask {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 65% 65% at 50% 50%, transparent 20%, rgba(0,0,0,0.65) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.6) 100%);
+  z-index: 10;
+}
+
+.photo {
+  position: absolute;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.07);
+  transition: box-shadow 0.8s ease;
+}
+
+.half:hover .photo {
+  box-shadow: 0 32px 80px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.12);
+}
+
+.photoSheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 55%);
+  z-index: 1;
+}
+
+/* ─── KADIN: Sağa yığılmış fotoğraflar ─── */
+.kadinHalf .photoMain {
+  width: 210px;
+  height: 300px;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%) rotate(-4deg);
+  animation: kadinFloat1 9s ease-in-out infinite alternate;
+}
+
+.kadinHalf .photoTopRight {
+  width: 155px;
+  height: 210px;
+  left: 7%;
+  top: 10%;
+  transform: rotate(6deg);
+  animation: kadinFloat2 12s ease-in-out infinite alternate-reverse;
+}
+
+.kadinHalf .photoBottomLeft {
+  width: 140px;
+  height: 190px;
+  left: 10%;
+  bottom: 8%;
+  transform: rotate(-5deg);
+  animation: kadinFloat3 10s ease-in-out infinite alternate;
+}
+
+/* ─── ERKEK: Sola yığılmış fotoğraflar ─── */
+.erkekHalf .photoMain {
+  width: 210px;
+  height: 300px;
+  left: 10%;
+  top: 50%;
+  transform: translateY(-50%) rotate(4deg);
+  animation: erkekFloat1 10s ease-in-out infinite alternate-reverse;
+}
+
+.erkekHalf .photoTopRight {
+  width: 155px;
+  height: 210px;
+  right: 7%;
+  top: 10%;
+  transform: rotate(-6deg);
+  animation: erkekFloat2 13s ease-in-out infinite alternate;
+}
+
+.erkekHalf .photoBottomLeft {
+  width: 140px;
+  height: 190px;
+  right: 10%;
+  bottom: 8%;
+  transform: rotate(5deg);
+  animation: erkekFloat3 11s ease-in-out infinite alternate-reverse;
+}
+
+/* ─── ANİMASYONLAR ─── */
+@keyframes kadinFloat1 {
+  0%   { transform: translateY(-50%) rotate(-4deg); }
+  100% { transform: translateY(calc(-50% - 12px)) rotate(-2.5deg); }
+}
+@keyframes kadinFloat2 {
+  0%   { transform: rotate(6deg) translateY(0px); }
+  100% { transform: rotate(7.5deg) translateY(-14px); }
+}
+@keyframes kadinFloat3 {
+  0%   { transform: rotate(-5deg) translateY(0px); }
+  100% { transform: rotate(-3.5deg) translateY(-9px); }
+}
+
+@keyframes erkekFloat1 {
+  0%   { transform: translateY(-50%) rotate(4deg); }
+  100% { transform: translateY(calc(-50% - 12px)) rotate(2.5deg); }
+}
+@keyframes erkekFloat2 {
+  0%   { transform: rotate(-6deg) translateY(0px); }
+  100% { transform: rotate(-7.5deg) translateY(-14px); }
+}
+@keyframes erkekFloat3 {
+  0%   { transform: rotate(5deg) translateY(0px); }
+  100% { transform: rotate(3.5deg) translateY(-9px); }
+}
+
+/* Hover: fotoğraflar öne çıksın */
+.kadinHalf:hover .photoMain {
+  transform: translateY(-50%) rotate(-2deg) scale(1.05);
+}
+.erkekHalf:hover .photoMain {
+  transform: translateY(-50%) rotate(2deg) scale(1.05);
+}
+.half:hover .photoTopRight {
+  transform: rotate(2deg) translateY(-10px) scale(1.04);
+}
+.erkekHalf:hover .photoTopRight {
+  transform: rotate(-2deg) translateY(-10px) scale(1.04);
+}
+.half:hover .photoBottomLeft {
+  transform: rotate(-2deg) translateY(-7px) scale(1.03);
+}
+.erkekHalf:hover .photoBottomLeft {
+  transform: rotate(2deg) translateY(-7px) scale(1.03);
+}
+
+@media (max-width: 768px) {
+  .kadinHalf .photoTopRight,
+  .erkekHalf .photoTopRight {
+    width: 110px;
+    height: 150px;
+  }
+  .kadinHalf .photoBottomLeft,
+  .erkekHalf .photoBottomLeft {
+    display: none;
+  }
+  .kadinHalf .photoMain,
+  .erkekHalf .photoMain {
+    width: 150px;
+    height: 210px;
   }
 }

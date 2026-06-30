@@ -1,7 +1,9 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import styles from '@/app/page.module.css';
+import KadinBackgroundPaths from '@/components/KadinBackgroundPaths';
 
 /* ─── Intersection Observer Hook ─── */
 function useInView(threshold = 0.15) {
@@ -30,6 +32,15 @@ export default function StudioPage({ gender }: StudioPageProps) {
   const [reviewIndex, setReviewIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const bookingRef = useInView(0.05);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+    e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+  };
+
 
   /* Scroll listener */
   useEffect(() => {
@@ -100,16 +111,24 @@ export default function StudioPage({ gender }: StudioPageProps) {
 
   const galleryPhotos = isKadin
     ? [
-        { src: '/erbil-backstage-1.jpg', label: 'Backstage kadın styling' },
-        { src: '/erbil-backstage-2.jpg', label: 'Çekim saç tasarımı' },
-        { src: '/erbil-salon.jpg', label: 'Salon ortamı' },
-        { src: '/erbil-show-1.jpg', label: 'Kuaförüm Sensin çekimleri' },
+        { src: '/unluler/unluler-image-1.jpg', label: 'Backstage Kadın Styling', type: 'image' },
+        { src: '/unluler/unluler-image-2.jpg', label: 'Çekim Saç Tasarımı', type: 'image' },
+        { src: '/unluler/unluler-image-5.jpeg', label: 'Özel Davet Saç Tasarımı', type: 'image' },
+        { src: '/unluler/unluler-image-6.jpeg', label: 'Gelin & Davet Tasarımı', type: 'image' },
+        { src: '/unluler/unluler-image-7.jpeg', label: 'Renklendirme & Styling', type: 'image' },
+        { src: '/unluler/unluler-image-9.jpeg', label: 'Modern Topuz Tasarımı', type: 'image' },
+        { src: '/unluler/unluler-image-10.jpeg', label: 'Profesyonel Kadın Styling', type: 'image' },
+        { src: '/instagram/instagram-image-2.jpg', label: 'Özel Çekim Saç Tasarımı', type: 'image' },
+        { src: '/instagram/instagram-image-4.jpg', label: 'Kuaförüm Sensin Kadın Tasarımı', type: 'image' },
+        { src: '/unluler/unluler-video-1.mp4', label: 'Kadın Backstage Hazırlık', type: 'video' },
+        { src: '/unluler/unluler-video-2.mp4', label: 'Kadın Styling Çalışması', type: 'video' },
       ]
     : [
-        { src: '/erbil-backstage-1.jpg', label: 'Backstage çalışma' },
-        { src: '/erbil-backstage-2.jpg', label: 'Set üzeri styling' },
-        { src: '/erbil-salon.jpg', label: 'Salon ortamı' },
-        { src: '/erbil-show-1.jpg', label: 'Kuaförüm Sensin çekimleri' },
+        { src: '/unluler/unluler-image-3.jpeg', label: 'Artistik Erkek Saç Kesimi', type: 'image' },
+        { src: '/unluler/unluler-image-4.jpeg', label: 'Modern Erkek Kesim & Tasarım', type: 'image' },
+        { src: '/unluler/unluler-image-8.jpeg', label: 'Sakal Tasarımı & Bakım', type: 'image' },
+        { src: '/instagram/instagram-image-1.jpg', label: 'Anatomik Erkek Tıraşı', type: 'image' },
+        { src: '/instagram/instagram-image-3.jpg', label: 'Stüdyo Erkek Saç Tasarımı', type: 'image' },
       ];
 
   const bookingPerks = [
@@ -133,10 +152,13 @@ export default function StudioPage({ gender }: StudioPageProps) {
 
       {/* ─────────────── NAVBAR ─────────────── */}
       <nav className={`${styles.navbar} ${scrolled ? styles.navbarScrolled : ''}`}>
-        <div className={styles.logo}>
-          <span className={styles.logoText}>ERBİL KIZILTAN</span>
-          <span className={styles.logoSubtitle}>{heroTitle.subtitle}</span>
-        </div>
+        <Link href="/" className={styles.logo} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px' }}>
+          <img src="/logo.jpg" alt="EX Logo" style={{ width: '56px', height: '56px', objectFit: 'contain', borderRadius: '8px' }} />
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span className={styles.logoText}>ERBİL KIZILTAN</span>
+            <span className={styles.logoSubtitle}>{heroTitle.subtitle}</span>
+          </div>
+        </Link>
         <div className={styles.navLinks}>
           {['Hakkımızda', 'Hizmetler', 'Galeri', 'Yorumlar', 'İletişim'].map((item) => (
             <a key={item} href={`#${item === 'Hakkımızda' ? 'hakkimizda' : item === 'Hizmetler' ? 'hizmetler' : item === 'Galeri' ? 'galeri' : item === 'Yorumlar' ? 'yorumlar' : 'iletisim'}`} className={styles.navLink}>
@@ -196,13 +218,153 @@ export default function StudioPage({ gender }: StudioPageProps) {
       {/* ─────────────── HERO ─────────────── */}
       <header className={styles.hero}>
         <div className={styles.heroCanvas}>
-          <div className={styles.heroGlow1} />
-          <div className={styles.heroGlow2} />
-          <div className={styles.heroGlow3} />
-          <div className={styles.heroGrid} />
-          <div className={styles.heroNoise} />
-          <div className={styles.heroLine1} />
-          <div className={styles.heroLine2} />
+          {!isKadin && (
+            <video
+              src="/media/erkek/erkek-vid-2026-06-29-at-19.37.17.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                opacity: 0.25,
+                zIndex: 0,
+                pointerEvents: 'none',
+                filter: 'grayscale(30%) contrast(1.1) brightness(0.8)'
+              }}
+            />
+          )}
+
+          {/* Kadın Tarafı Özel Arka Plan */}
+          {isKadin && (
+            <>
+              {/* ── SOL SÜTUN ─────────────────────────────── */}
+              {/* Sol üst fotoğraf */}
+              <div style={{
+                position: 'absolute', left: '1%', top: '5%',
+                width: '220px', height: '310px', borderRadius: '20px', overflow: 'hidden',
+                boxShadow: '0 30px 80px rgba(0,0,0,0.75)',
+                border: '1px solid rgba(240,168,176,0.18)',
+                animation: 'kadinPhotoFloat2 12s ease-in-out infinite alternate',
+                zIndex: 0, pointerEvents: 'none',
+              }}>
+                <Image src="/media/kadin/kadin-img-2026-06-29-at-19.41.36.jpeg" alt="" fill style={{ objectFit: 'cover', filter: 'brightness(0.9) saturate(1.1)' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(22,10,15,0.0), rgba(22,10,15,0.35))' }} />
+              </div>
+              {/* Sol alt fotoğraf */}
+              <div style={{
+                position: 'absolute', left: '3%', bottom: '6%',
+                width: '190px', height: '260px', borderRadius: '18px', overflow: 'hidden',
+                boxShadow: '0 25px 70px rgba(0,0,0,0.7)',
+                border: '1px solid rgba(240,168,176,0.12)',
+                animation: 'kadinPhotoFloat3 15s ease-in-out infinite alternate-reverse',
+                zIndex: 0, pointerEvents: 'none',
+              }}>
+                <Image src="/media/kadin/kadin-about.jpeg" alt="" fill style={{ objectFit: 'cover', filter: 'brightness(0.88) saturate(1.15)' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(22,10,15,0.0), rgba(22,10,15,0.3))' }} />
+              </div>
+              {/* Sol kenardan içe doğru gradient fade - Çok hafifletildi ki fotoğraflar saklanmasın */}
+              <div style={{
+                position: 'absolute', left: 0, top: 0, bottom: 0, width: '30%',
+                background: 'linear-gradient(to right, rgba(22,10,15,0.2) 0%, transparent 100%)',
+                zIndex: 1, pointerEvents: 'none',
+              }} />
+
+              {/* ── SAĞ SÜTUN ─────────────────────────────── */}
+              {/* Sağ ana (büyük) fotoğraf */}
+              <div style={{
+                position: 'absolute', right: '1%', top: '8%',
+                width: '260px', height: '390px', borderRadius: '22px', overflow: 'hidden',
+                boxShadow: '0 35px 90px rgba(0,0,0,0.8)',
+                border: '1px solid rgba(240,168,176,0.2)',
+                animation: 'kadinPhotoFloat1 10s ease-in-out infinite alternate',
+                zIndex: 0, pointerEvents: 'none',
+              }}>
+                <Image src="/media/kadin/kadin-backstage-sag.jpg" alt="" fill style={{ objectFit: 'cover', filter: 'brightness(0.92) saturate(1.1)' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to left, rgba(22,10,15,0.0), rgba(22,10,15,0.35))' }} />
+              </div>
+              {/* Sağ alt fotoğraf */}
+              <div style={{
+                position: 'absolute', right: '3%', bottom: '7%',
+                width: '195px', height: '265px', borderRadius: '18px', overflow: 'hidden',
+                boxShadow: '0 22px 65px rgba(0,0,0,0.7)',
+                border: '1px solid rgba(240,168,176,0.1)',
+                animation: 'kadinPhotoFloat3 17s ease-in-out infinite alternate',
+                zIndex: 0, pointerEvents: 'none',
+              }}>
+                <Image src="/media/kadin/kadin-img-2026-06-29-at-19.43.42.jpeg" alt="" fill style={{ objectFit: 'cover', filter: 'brightness(0.9) saturate(1.1)' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to left, rgba(22,10,15,0.0), rgba(22,10,15,0.3))' }} />
+              </div>
+              {/* Sağ kenardan içe doğru gradient fade - Çok hafifletildi */}
+              <div style={{
+                position: 'absolute', right: 0, top: 0, bottom: 0, width: '30%',
+                background: 'linear-gradient(to left, rgba(22,10,15,0.2) 0%, transparent 100%)',
+                zIndex: 1, pointerEvents: 'none',
+              }} />
+
+              {/* ── BUBBLEGUM MESH GLOW (Yazının arkası için çoklu canlı renkler) ──────────── */}
+              {/* Parlak Cyan Orb */}
+              <div style={{
+                position: 'absolute', left: '20%', top: '30%',
+                width: '45vw', height: '45vw', maxWidth: '600px', maxHeight: '600px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle at center, rgba(72,217,255,0.22) 0%, transparent 70%)',
+                filter: 'blur(70px)',
+                animation: 'glowPulse1 12s ease-in-out infinite',
+                zIndex: 0, pointerEvents: 'none',
+              }} />
+              {/* Canlı Pembe (Magenta) Orb */}
+              <div style={{
+                position: 'absolute', right: '15%', top: '15%',
+                width: '50vw', height: '50vw', maxWidth: '700px', maxHeight: '700px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle at center, rgba(255,105,180,0.2) 0%, transparent 70%)',
+                filter: 'blur(80px)',
+                animation: 'glowPulse2 15s ease-in-out infinite',
+                zIndex: 0, pointerEvents: 'none',
+              }} />
+              {/* Derin Mor/Mavi Orb */}
+              <div style={{
+                position: 'absolute', left: '40%', bottom: '0%',
+                width: '40vw', height: '40vw', maxWidth: '550px', maxHeight: '550px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle at center, rgba(138,43,226,0.2) 0%, transparent 70%)',
+                filter: 'blur(60px)',
+                animation: 'glowPulse3 10s ease-in-out infinite',
+                zIndex: 0, pointerEvents: 'none',
+              }} />
+              {/* Şeftali / Sıcak Sararmış Orb */}
+              <div style={{
+                position: 'absolute', left: '10%', bottom: '20%',
+                width: '35vw', height: '35vw', maxWidth: '500px', maxHeight: '500px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle at center, rgba(255,180,120,0.18) 0%, transparent 70%)',
+                filter: 'blur(50px)',
+                animation: 'glowPulse1 14s ease-in-out infinite reverse',
+                zIndex: 0, pointerEvents: 'none',
+              }} />
+
+              {/* ── Üst ve Alt ton bandı ──────────────────── */}
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: 'linear-gradient(to bottom, rgba(22,10,15,0.6) 0%, transparent 30%, transparent 70%, rgba(22,10,15,0.7) 100%)',
+                zIndex: 1, pointerEvents: 'none',
+              }} />
+            </>
+          )}
+
+          {/* Erkek için noktalı grid kalsın, kadın için gösterme */}
+          {!isKadin && <div className={styles.heroGlow1} style={{ zIndex: 1 }} />}
+          {!isKadin && <div className={styles.heroGlow2} style={{ zIndex: 1 }} />}
+          {!isKadin && <div className={styles.heroGlow3} style={{ zIndex: 1 }} />}
+          {isKadin && <div className={styles.heroGlow1} style={{ zIndex: 1 }} />}
+          <div className={styles.heroGrid} style={{ zIndex: 2, opacity: isKadin ? 0 : 1 }} />
+          <div className={styles.heroNoise} style={{ zIndex: 3 }} />
+          <div className={styles.heroLine1} style={{ zIndex: 4 }} />
+          <div className={styles.heroLine2} style={{ zIndex: 4 }} />
         </div>
 
         <div className={styles.heroContent}>
@@ -242,7 +404,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
             </div>
             <div className={styles.heroTrustDot} />
             <div className={styles.heroTrustItem}>
-              <span>10+ yıl deneyim</span>
+              <span>20+ yıl deneyim</span>
             </div>
           </div>
         </div>
@@ -254,12 +416,117 @@ export default function StudioPage({ gender }: StudioPageProps) {
           <span>⭐</span> 5.0 Google Puan
         </div>
         <div className={styles.heroTag3}>
-          <span>✂️</span> 10+ Yıl Deneyim
+          <span>✂️</span> 20+ Yıl Deneyim
         </div>
 
         <div className={styles.scrollIndicator}>
           <span></span>
         </div>
+
+        {/* 3D Image Gallery — Kadın hero sağ tarafı */}
+        {isKadin && (
+          <div style={{
+            position: 'absolute',
+            right: '2%',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 5,
+            perspective: '900px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '380px',
+            height: '520px',
+            pointerEvents: 'none',
+          }}>
+            {/* Card 1 — arka sol */}
+            <div style={{
+              position: 'absolute',
+              width: '200px',
+              height: '280px',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              transform: 'rotateY(28deg) rotateX(4deg) translateX(-120px) translateZ(-80px)',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              opacity: 0.75,
+            }}>
+              <Image src="/media/kadin/kadin-img-2026-06-29-at-19.41.25.jpeg" alt="Kadın Styling" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%)' }} />
+            </div>
+
+            {/* Card 2 — ön orta (büyük, merkez) */}
+            <div style={{
+              position: 'absolute',
+              width: '240px',
+              height: '340px',
+              borderRadius: '20px',
+              overflow: 'hidden',
+              transform: 'rotateY(0deg) rotateX(6deg) translateZ(40px)',
+              boxShadow: '0 30px 80px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.12)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              zIndex: 2,
+            }}>
+              <Image src="/media/kadin/kadin-about.jpeg" alt="Kadın Ana" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%)' }} />
+              <div style={{
+                position: 'absolute',
+                bottom: '1rem',
+                left: '1rem',
+                right: '1rem',
+              }}>
+                <p style={{ color: '#fff', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', opacity: 0.9, margin: 0 }}>Erbil Kızıltan</p>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.6rem', letterSpacing: '1.5px', textTransform: 'uppercase', margin: 0 }}>Women's Artist</p>
+              </div>
+            </div>
+
+            {/* Card 3 — arka sağ */}
+            <div style={{
+              position: 'absolute',
+              width: '200px',
+              height: '280px',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              transform: 'rotateY(-28deg) rotateX(4deg) translateX(120px) translateZ(-80px)',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              opacity: 0.75,
+            }}>
+              <Image src="/media/kadin/kadin-backstage-sag.jpg" alt="Kadın Backstage" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%)' }} />
+            </div>
+
+            {/* Card 4 — en arka küçük sol */}
+            <div style={{
+              position: 'absolute',
+              width: '160px',
+              height: '220px',
+              borderRadius: '14px',
+              overflow: 'hidden',
+              transform: 'rotateY(42deg) rotateX(2deg) translateX(-220px) translateZ(-160px)',
+              boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
+              border: '1px solid rgba(255,255,255,0.05)',
+              opacity: 0.45,
+            }}>
+              <Image src="/media/kadin/kadin-img-2026-06-29-at-19.41.36.jpeg" alt="Kadın Stil" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} />
+            </div>
+
+            {/* Card 5 — en arka küçük sağ */}
+            <div style={{
+              position: 'absolute',
+              width: '160px',
+              height: '220px',
+              borderRadius: '14px',
+              overflow: 'hidden',
+              transform: 'rotateY(-42deg) rotateX(2deg) translateX(220px) translateZ(-160px)',
+              boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
+              border: '1px solid rgba(255,255,255,0.05)',
+              opacity: 0.45,
+            }}>
+              <Image src="/media/kadin/kadin-img-2026-06-29-at-19.43.42.jpeg" alt="Kadın Detay" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} />
+            </div>
+          </div>
+        )}
       </header>
 
       {/* ─────────────── STATS BAR ─────────────── */}
@@ -268,7 +535,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
         ref={statsRef.ref as React.RefObject<HTMLDivElement>}
       >
         {[
-          { num: '10+', label: 'Yıl Deneyim' },
+          { num: '20+', label: 'Yıl Deneyim' },
           { num: '50+', label: 'Ünlü İsim' },
           { num: '5.0', label: '★ Google Puanı' },
           { num: 'TV', label: 'Program Deneyimi' },
@@ -311,7 +578,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
           <div className={styles.aboutImageSide}>
             <div className={styles.aboutImgMain}>
               <Image
-                src="/erbil-backstage-1.jpg"
+                src={isKadin ? '/media/kadin/kadin-about.jpeg' : '/erbil-backstage-1.jpg'}
                 alt="Erbil Kızıltan backstage çalışırken"
                 fill
                 quality={100}
@@ -365,67 +632,211 @@ export default function StudioPage({ gender }: StudioPageProps) {
         </div>
       </section>
 
-      {/* ─────────────── CELEBRITIES ─────────────── */}
+      {/* ─────────────── PORTFOLIO SHOWCASE ─────────────── */}
       <section
         className={`${styles.section} ${styles.sectionDark} ${celebRef.inView ? styles.visible : ''}`}
         ref={celebRef.ref as React.RefObject<HTMLElement>}
       >
         <div className={styles.sectionHeader}>
           <div className={styles.sectionLabel}>— Backstage & Sahneler</div>
-          <h2 className={styles.sectionTitle}>Ünlülerle Sahne Arkası</h2>
+          <h2 className={styles.sectionTitle}>
+            {isKadin ? 'Sahnenin Arkasındaki Zarafet' : 'Sanatçı Ustalığının Kanıtı'}
+          </h2>
           <p className={styles.sectionSubtitle}>
-            Set çekimlerinden özel etkinliklere, Erbil Kızıltan Türkiye'nin önde gelen isimleriyle omuz omuza çalışmaktadır.
+            {isKadin
+              ? 'TV setlerinden özel çekimlere, Erbil Kızıltan kadın stilinin zirvesini temsil etmektedir.'
+              : 'Ünlü isimlerden sahne prodüksiyonlarına, Erbil Kızıltan erkek imajının mimarıdır.'}
           </p>
         </div>
-        <div className={styles.celebGrid}>
-          <div className={styles.celebCardLarge}>
-            <div className={styles.celebImgWrapper}>
+
+        {/* Magazine-style masonry portfolio */}
+        <div className={styles.portfolioGrid}>
+
+          {/* HERO — large left card */}
+          <div className={styles.portfolioHero}>
+            <div className={styles.portfolioImgWrapper}>
               <Image
-                src="/erbil-backstage-2.jpg"
-                alt="Erbil Kızıltan set çalışması"
+                src={isKadin ? '/media/kadin/kadin-img-2026-06-29-at-19.39.22.jpeg' : '/media/unisex/unisex-img-2026-06-29-at-19.41.46.jpeg'}
+                alt={isKadin ? 'Erbil Kızıltan — Kadın Backstage Styling' : 'Erbil Kızıltan — Artistik Erkek Saç Kesimi'}
+                fill
+                quality={100}
+                sizes="(max-width: 768px) 100vw, 45vw"
+                style={{ objectFit: 'cover', objectPosition: isKadin ? 'center top' : 'center 20%' }}
+                priority
+              />
+              <div className={styles.portfolioOverlay}>
+                <span className={styles.portfolioTag}>
+                  {isKadin ? '🎬 Backstage' : '✂️ Sanatçı Tıraşı'}
+                </span>
+                <p>{isKadin ? 'Set hazırlığında mükemmel kadın styling' : 'Yüz hatlarına göre özelleştirilmiş anatomik kesim'}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Top-right card */}
+          <div className={styles.portfolioCard}>
+            <div className={styles.portfolioImgWrapper}>
+              <Image
+                src={isKadin ? '/media/kadin/kadin-fb-632363448.jpg' : '/media/erkek/erkek-fb-626274197.jpg'}
+                alt={isKadin ? 'Özel Davet Saç Tasarımı' : 'Modern Erkek Kesim ve Tasarım'}
+                fill
+                quality={95}
+                sizes="(max-width: 768px) 100vw, 30vw"
+                style={{ objectFit: 'cover', objectPosition: 'center top' }}
+              />
+              <div className={styles.portfolioOverlay}>
+                <span className={styles.portfolioTag}>
+                  {isKadin ? '💫 Özel Davet' : '📐 Modern Tasarım'}
+                </span>
+                <p>{isKadin ? 'Özel davetler için zarafet' : 'Güncel erkek saç trendleri'}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Top-right second card */}
+          <div className={styles.portfolioCard}>
+            <div className={styles.portfolioImgWrapper}>
+              <Image
+                src={isKadin ? '/media/unisex/unisex-img-2026-06-29-at-19.41.46.jpeg' : '/media/erkek/erkek-img-2026-06-29-at-19.46.39.jpeg'}
+                alt={isKadin ? 'Kuaförüm Sensin Kadın Tasarımı' : 'Anatomik Erkek Tıraşı'}
+                fill
+                quality={95}
+                sizes="(max-width: 768px) 100vw, 30vw"
+                style={{ objectFit: 'cover', objectPosition: 'center 20%' }}
+              />
+              <div className={styles.portfolioOverlay}>
+                <span className={styles.portfolioTag}>
+                  {isKadin ? '📺 TV & Instagram' : '🏆 Anatomik Kesim'}
+                </span>
+                <p>{isKadin ? 'Ekranların ve sosyal medyanın tercihi' : 'Karakterini ortaya çıkaran kesim sanatı'}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Wide bottom card — spans 2 right columns */}
+          <div className={styles.portfolioWide}>
+            <div className={styles.portfolioImgWrapper}>
+              <Image
+                src={isKadin ? '/media/alt-5-v2.jpg' : '/media/alt-6.jpg'}
+                alt={isKadin ? 'Renklendirme ve Styling' : 'Erbil Kızıltan Özel Tasarım'}
                 fill
                 quality={100}
                 sizes="(max-width: 768px) 100vw, 60vw"
-                style={{ objectFit: 'cover' }}
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
               />
-              <div className={styles.celebOverlay}>
-                <span className={styles.celebTag}>Set & Backstage</span>
-                <p>Profesyonel set ortamında özel styling</p>
+              <div className={styles.portfolioOverlay}>
+                <span className={styles.portfolioTag}>
+                  {isKadin ? '🎨 Renklendirme & Styling' : '✂️ Özel Kesim & Tasarım'}
+                </span>
+                <p>{isKadin ? 'Balayaj ve ombré ile ışıltılı dönüşüm' : 'Detaylarda gizli ustalık'}</p>
               </div>
             </div>
           </div>
-          <div className={styles.celebCardSmall}>
-            <div className={styles.celebImgWrapper}>
-              <Image
-                src="/erbil-show-1.jpg"
-                alt="Kuaförüm Sensin programı"
-                fill
-                quality={100}
-                sizes="(max-width: 768px) 100vw, 40vw"
-                style={{ objectFit: 'cover', objectPosition: 'center 20%' }}
-              />
-              <div className={styles.celebOverlay}>
-                <span className={styles.celebTag}>📺 TV Programı</span>
-                <p>Kuaförüm Sensin yarışmacısı</p>
+
+        </div>
+      </section>
+
+      {/* ─────────────── VIDEO CINEMA ─────────────── */}
+      <section className={styles.videoSection}>
+        <div className={styles.videoSectionBg}>
+          <div className={styles.videoSectionGlow} />
+        </div>
+        <div className={styles.videoSectionInner}>
+          <div className={`${styles.videoSectionHeader} ${styles.sectionHeader}`}>
+            <div className={styles.sectionLabel}>— Backstage Anları</div>
+            <h2 className={styles.sectionTitle}>
+              {isKadin ? 'Sahneden Kameraya, Zarafet' : 'Ustalık ve Cool Tarz'}
+            </h2>
+            <p className={styles.sectionSubtitle}>
+              TV ve prodüksiyon setlerinden kayıt altına alınan backstage çalışma anları.
+            </p>
+          </div>
+          {/* Kadın: 3'lü layout — sol resim, orta video, sağ resim */}
+          {isKadin ? (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1.2fr 1fr',
+              gap: '1.5rem',
+              alignItems: 'stretch',
+              maxWidth: '1100px',
+              margin: '0 auto',
+            }}>
+              {/* Sol resim */}
+              <div className={styles.videoCard} style={{ aspectRatio: '9/16', maxHeight: '580px' }}>
+                <Image
+                  src="/media/kadin/kadin-img-2026-06-29-at-19.41.25.jpeg"
+                  alt="Kadın Styling Çekimi"
+                  fill
+                  style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                />
+                <div className={styles.videoCardOverlay}>
+                  <span className={styles.videoCardBadge}>✨ Styling</span>
+                  <p className={styles.videoCardTitle}>Sahne Hazırlığı</p>
+                </div>
+              </div>
+
+              {/* Orta video */}
+              <div className={styles.videoCard} style={{ aspectRatio: '9/16', maxHeight: '580px' }}>
+                <video
+                  src="/media/kadin/kadin-vid-2026-06-29-at-19.40.19.mp4"
+                  className={styles.videoCardVideo}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  aria-label="Kadın Backstage Hazırlık"
+                />
+                <div className={styles.videoCardOverlay}>
+                  <span className={styles.videoCardBadge}>🎬 Backstage</span>
+                  <p className={styles.videoCardTitle}>Kadın Backstage Hazırlık</p>
+                </div>
+              </div>
+
+              {/* Sağ resim */}
+              <div className={styles.videoCard} style={{ aspectRatio: '9/16', maxHeight: '580px' }}>
+                <Image
+                  src="/media/kadin/kadin-backstage-sag.jpg"
+                  alt="Kadın Backstage Detay"
+                  fill
+                  style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                />
+                <div className={styles.videoCardOverlay}>
+                  <span className={styles.videoCardBadge}>📸 Detay</span>
+                  <p className={styles.videoCardTitle}>Zarif Dokunuşlar</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div className={styles.celebCardSmall}>
-            <div className={styles.celebImgWrapper}>
-              <Image
-                src="/erbil-salon.jpg"
-                alt="Erbil Kızıltan salon çalışması"
-                fill
-                quality={100}
-                sizes="(max-width: 768px) 100vw, 40vw"
-                style={{ objectFit: 'cover' }}
-              />
-              <div className={styles.celebOverlay}>
-                <span className={styles.celebTag}>Özel Salon</span>
-                <p>Kişiye özel premium deneyim</p>
+          ) : (
+            /* Erkek: tek video ortada */
+            <div className={styles.videoDuo} style={{ gridTemplateColumns: '1fr', maxWidth: '800px', margin: '0 auto' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
+                <div className={styles.videoCard} style={{ aspectRatio: '3/4', margin: '0 auto', width: '100%', maxWidth: '640px', boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}>
+                  <video
+                    src="/media/erkek/erkek-vid-2026-06-29-at-19.37.17.mp4"
+                    className={styles.videoCardVideo}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    style={{ objectPosition: 'center 30%' }}
+                    aria-label="Erkek Sanatçı Tıraşı"
+                  />
+                  <div className={styles.videoCardOverlay}>
+                    <span className={styles.videoCardBadge}>✂️ Gökhan Türkmen</span>
+                    <p className={styles.videoCardTitle}>Özel Kesim</p>
+                  </div>
+                </div>
+                <div style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1.25rem', color: '#fff', letterSpacing: '4px', fontWeight: 300, textTransform: 'uppercase', opacity: 0.85 }}>
+                    Gökhan Türkmen
+                  </h3>
+                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', marginTop: '0.4rem', letterSpacing: '2px', textTransform: 'uppercase', fontWeight: 400, opacity: 0.6 }}>
+                    Backstage
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -441,7 +852,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
         </div>
         <div className={styles.servicesGrid}>
           {services.map((s, i) => (
-            <div key={i} className={styles.serviceCard} style={{ animationDelay: `${i * 0.1}s` }}>
+            <div key={i} className={styles.serviceCard} style={{ animationDelay: `${i * 0.1}s` }} onMouseMove={handleMouseMove}>
               {s.tag && <span className={styles.serviceTag}>{s.tag}</span>}
               <div className={styles.serviceIconWrap}>
                 <span className={styles.serviceIcon}>{s.icon}</span>
@@ -476,47 +887,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
         </div>
       </section>
 
-      {/* ─────────────── GALLERY ─────────────── */}
-      <section
-        id="galeri"
-        className={`${styles.section} ${styles.sectionDark} ${galleryRef.inView ? styles.visible : ''}`}
-        ref={galleryRef.ref as React.RefObject<HTMLElement>}
-      >
-        <div className={styles.sectionHeader}>
-          <div className={styles.sectionLabel}>— Galeri</div>
-          <h2 className={styles.sectionTitle}>Çalışmalardan Kareler</h2>
-        </div>
-        <div className={styles.galleryGrid}>
-          {galleryPhotos.map((photo, i) => (
-            <div key={i} className={styles.galleryItem} style={{ animationDelay: `${i * 0.08}s` }}>
-              <Image
-                src={photo.src}
-                alt={photo.label}
-                fill
-                quality={90}
-                sizes="(max-width: 768px) 50vw, 25vw"
-                style={{ objectFit: 'cover' }}
-              />
-              <div className={styles.galleryOverlay}>
-                <span>{photo.label}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className={styles.instagramCta}>
-          <a
-            href="https://www.instagram.com/erbil.kzltan/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.instagramBtn}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-            </svg>
-            Instagram'da Takip Et — @erbil.kzltan
-          </a>
-        </div>
-      </section>
+
 
       {/* ─────────────── REVIEWS CAROUSEL ─────────────── */}
       <section
@@ -694,7 +1065,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
               { icon: '🕐', title: 'Çalışma Saatleri', content: 'Her Gün 09:00\'dan itibaren açık' },
               { icon: '📸', title: 'Instagram', href: 'https://www.instagram.com/erbil.kzltan/', link: '@erbil.kzltan', external: true },
             ].map((card) => (
-              <div key={card.title} className={styles.contactCard}>
+              <div key={card.title} className={styles.contactCard} onMouseMove={handleMouseMove}>
                 <span className={styles.contactIcon}>{card.icon}</span>
                 <div>
                   <h4>{card.title}</h4>
