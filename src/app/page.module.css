@@ -1008,14 +1008,18 @@
    SERVICES
 ══════════════════════════════════════════════════════ */
 .servicesGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.25rem;
   max-width: 1100px;
   margin: 0 auto;
 }
 
 .serviceCard {
+  flex: 1 1 calc(33.333% - 1.25rem);
+  min-width: 300px;
+  max-width: calc(33.333% - 0.85rem);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-card);
@@ -1025,6 +1029,14 @@
   overflow: hidden;
   cursor: default;
   animation: fadeInUp 0.6s both;
+}
+
+/* For the Erkek page, we have 4 items, let's make it 2x2 on desktop */
+@media (min-width: 481px) {
+  .themeErkek .serviceCard {
+    flex: 1 1 calc(50% - 0.625rem);
+    max-width: calc(50% - 0.625rem);
+  }
 }
 
 /* Top gradient accent line */
@@ -1971,7 +1983,8 @@
 @media (max-width: 480px) {
   .footerLinks { grid-template-columns: 1fr; }
   .heroTitle { margin-bottom: 1rem; }
-  .servicesGrid { grid-template-columns: 1fr; }
+  .servicesGrid { flex-direction: column; }
+  .serviceCard { max-width: 100%; min-width: 100%; }
   .galleryGrid {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 160px 160px;
