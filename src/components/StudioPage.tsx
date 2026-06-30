@@ -140,7 +140,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
 
   const targetLink = isKadin ? '/erkek' : '/kadin';
   const targetLabel = isKadin ? 'Erkek Hizmetleri →' : 'Kadın Hizmetleri →';
-  const themeClass = isKadin ? styles.themeKadin : styles.themeErkek;
+  const themeClass = isKadin ? 'themeKadin' : 'themeErkek';
 
   const handleWhatsApp = (serviceTitle: string) => {
     const message = encodeURIComponent(`Merhaba, ${gender === 'kadin' ? 'Kadın' : 'Erkek'} şubeniz için "${serviceTitle}" hizmetiniz hakkında bilgi almak ve randevu oluşturmak istiyorum.`);
