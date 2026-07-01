@@ -288,10 +288,11 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 5rem 2rem 3rem;
+  padding: 5rem 1.5rem 3rem;
   margin-top: -5vh;
   width: 100%;
   max-width: 1200px;
+  box-sizing: border-box;
 }
 
 /* --- Animated Cards Stack (Background/Left) --- */
@@ -365,6 +366,10 @@
   margin-bottom: 2rem;
   animation: fadeInDown 0.8s 0.1s both;
   backdrop-filter: blur(8px);
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .heroBadgeDot {
   width: 6px; height: 6px;
@@ -1931,18 +1936,25 @@
   .hero { min-height: 100svh; padding-bottom: 10%; }
   .heroTag1, .heroTag2, .heroTag3 { display: none; }
   .heroTitleLine1, .heroTitleLine2 { letter-spacing: -2px; }
-  .heroButtons { flex-direction: column; align-items: center; }
-  .heroTrust { flex-wrap: wrap; gap: 0.6rem; }
+  .heroButtons { flex-direction: column; align-items: stretch; width: 100%; max-width: 320px; margin: 0 auto; }
+  .primaryButton, .secondaryButton { justify-content: center; width: 100%; }
+  .heroTrust { flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
+  .heroBadge { font-size: 0.62rem; letter-spacing: 1.5px; padding: 0.4rem 0.9rem; }
+
+  /* Hero description */
+  .heroDescription { font-size: 0.95rem; }
+  .heroSubtitle { font-size: 0.85rem; letter-spacing: 3px; }
 
   /* Stats */
-  .statsBar { flex-wrap: wrap; gap: 1.5rem; }
+  .statsBar { flex-wrap: wrap; gap: 1rem; padding: 1.5rem 5%; }
   .statDivider { display: none; }
-  .statItem { padding: 0 1.2rem; }
+  .statItem { padding: 0 0.8rem; }
+  .statNumber { font-size: 1.8rem; }
 
   /* Portfolio showcase */
   .portfolioGrid {
     grid-template-columns: 1fr;
-    grid-template-rows: 280px 200px 200px 200px;
+    grid-template-rows: 260px 200px 200px 200px;
   }
   .portfolioHero { grid-column: 1; grid-row: 1; }
   .portfolioCard { grid-row: auto; grid-column: 1; }
@@ -1950,7 +1962,7 @@
 
   /* Video cinema */
   .videoDuo { grid-template-columns: 1fr; }
-  .videoCard { max-height: 380px; aspect-ratio: 4/5; }
+  .videoCard { max-height: 360px; aspect-ratio: 4/5; }
   .videoSection { padding: 4rem 5%; }
 
   /* Reviews — show carousel, hide grid */
@@ -1965,6 +1977,14 @@
   .galleryGrid > .galleryItem:first-child { grid-row: 1; grid-column: 1 / 3; }
   .galleryGrid > .galleryItem:nth-child(4) { grid-column: 1 / 3; }
 
+  /* Contact grid — stack on mobile */
+  .contactGrid {
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: 1.5rem;
+  }
+  .mapWrapper { height: 280px; border-radius: 10px; }
+
   /* Footer */
   .footerTop { padding: 3rem 5% 2rem; }
   .footerLinks { grid-template-columns: 1fr 1fr; }
@@ -1976,13 +1996,21 @@
   }
 
   /* Sections */
-  .section { padding: 4.5rem 5%; }
-  .sectionHeader { margin-bottom: 3rem; }
+  .section { padding: 4rem 5%; }
+  .sectionHeader { margin-bottom: 2.5rem; }
+  .sectionTitle { font-size: clamp(1.6rem, 6vw, 2.2rem); }
+
+  /* About grid */
+  .aboutGrid { grid-template-columns: 1fr; gap: 2rem; }
+  .aboutImageSide { height: 280px; }
 }
 
 @media (max-width: 480px) {
   .footerLinks { grid-template-columns: 1fr; }
-  .heroTitle { margin-bottom: 1rem; }
+  .heroTitle { margin-bottom: 0.75rem; }
+  .heroTitleLine1, .heroTitleLine2 { font-size: clamp(3.5rem, 18vw, 5.5rem); letter-spacing: -1px; }
+  .heroContent { padding: 5rem 1rem 3rem; }
+  .heroBadge { font-size: 0.58rem; letter-spacing: 1px; padding: 0.35rem 0.75rem; }
   .servicesGrid { flex-direction: column; }
   .serviceCard { max-width: 100%; min-width: 100%; }
   .galleryGrid {
@@ -1991,8 +2019,14 @@
   }
   .galleryGrid > .galleryItem:first-child { grid-column: 1 / 3; }
   .galleryGrid > .galleryItem:nth-child(4) { grid-column: 1 / 3; }
-  .portfolioGrid { grid-template-rows: 240px 180px 180px 180px; }
-  .videoCard { aspect-ratio: 3/4; max-height: 320px; }
+  .portfolioGrid { grid-template-rows: 220px 170px 170px 170px; }
+  .videoCard { aspect-ratio: 3/4; max-height: 300px; }
+  .statsBar { gap: 0.75rem; }
+  .statItem { padding: 0 0.5rem; }
+  .statNumber { font-size: 1.6rem; }
+  .statLabel { font-size: 0.65rem; }
+  .section { padding: 3.5rem 4%; }
+  .bookingSection { padding: 3.5rem 4%; }
 }
 
 /* ══════════════════════════════════════════════════════

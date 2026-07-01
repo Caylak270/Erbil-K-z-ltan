@@ -528,24 +528,246 @@
 }
 .half:hover .photoBottomLeft {
   transform: rotate(-2deg) translateY(-7px) scale(1.03);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 5, 5, 0.5);
+  backdrop-filter: blur(30px) saturate(150%);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
+  padding: 1.8rem 3rem;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 0 0 1px rgba(0,0,0,0.3);
+  pointer-events: none;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.container:has(.half:hover) .centerLogo {
+  transform: translate(-50%, -50%) scale(0.9);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  opacity: 0.7;
+}
+
+.logoText {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: #fff;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 15px rgba(0,0,0,0.6);
+  text-transform: uppercase;
+}
+
+.logoSubtitle {
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .centerLogo {
+    padding: 1.2rem 2rem;
+  }
+  .logoText {
+    font-size: 1.2rem;
+    letter-spacing: 0.15em;
+  }
+  .hintLabel {
+    display: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────
+   FOTOĞRAF KOLAJI (Portal split-screen)
+───────────────────────────────────────────────────── */
+
+.photoLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.photoLayerMask {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 65% 65% at 50% 50%, transparent 20%, rgba(0,0,0,0.65) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.6) 100%);
+  z-index: 10;
+}
+
+.photo {
+  position: absolute;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.07);
+  transition: box-shadow 0.8s ease;
+}
+
+.half:hover .photo {
+  box-shadow: 0 32px 80px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.12);
+}
+
+.photoSheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 55%);
+  z-index: 1;
+}
+
+/* ─── KADIN: Sağa yığılmış fotoğraflar ─── */
+.kadinHalf .photoMain {
+  width: 210px;
+  height: 300px;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%) rotate(-4deg);
+  animation: kadinFloat1 9s ease-in-out infinite alternate;
+}
+
+.kadinHalf .photoTopRight {
+  width: 155px;
+  height: 210px;
+  left: 7%;
+  top: 10%;
+  transform: rotate(6deg);
+  animation: kadinFloat2 12s ease-in-out infinite alternate-reverse;
+}
+
+.kadinHalf .photoBottomLeft {
+  width: 140px;
+  height: 190px;
+  left: 10%;
+  bottom: 8%;
+  transform: rotate(-5deg);
+  animation: kadinFloat3 10s ease-in-out infinite alternate;
+}
+
+/* ─── ERKEK: Sola yığılmış fotoğraflar ─── */
+.erkekHalf .photoMain {
+  width: 210px;
+  height: 300px;
+  left: 10%;
+  top: 50%;
+  transform: translateY(-50%) rotate(4deg);
+  animation: erkekFloat1 10s ease-in-out infinite alternate-reverse;
+}
+
+.erkekHalf .photoTopRight {
+  width: 155px;
+  height: 210px;
+  right: 7%;
+  top: 10%;
+  transform: rotate(-6deg);
+  animation: erkekFloat2 13s ease-in-out infinite alternate;
+}
+
+.erkekHalf .photoBottomLeft {
+  width: 140px;
+  height: 190px;
+  right: 10%;
+  bottom: 8%;
+  transform: rotate(5deg);
+  animation: erkekFloat3 11s ease-in-out infinite alternate-reverse;
+}
+
+/* ─── ANİMASYONLAR ─── */
+@keyframes kadinFloat1 {
+  0%   { transform: translateY(-50%) rotate(-4deg); }
+  100% { transform: translateY(calc(-50% - 12px)) rotate(-2.5deg); }
+}
+@keyframes kadinFloat2 {
+  0%   { transform: rotate(6deg) translateY(0px); }
+  100% { transform: rotate(7.5deg) translateY(-14px); }
+}
+@keyframes kadinFloat3 {
+  0%   { transform: rotate(-5deg) translateY(0px); }
+  100% { transform: rotate(-3.5deg) translateY(-9px); }
+}
+
+@keyframes erkekFloat1 {
+  0%   { transform: translateY(-50%) rotate(4deg); }
+  100% { transform: translateY(calc(-50% - 12px)) rotate(2.5deg); }
+}
+@keyframes erkekFloat2 {
+  0%   { transform: rotate(-6deg) translateY(0px); }
+  100% { transform: rotate(-7.5deg) translateY(-14px); }
+}
+@keyframes erkekFloat3 {
+  0%   { transform: rotate(5deg) translateY(0px); }
+  100% { transform: rotate(3.5deg) translateY(-9px); }
+}
+
+/* Hover: fotoğraflar öne çıksın */
+.kadinHalf:hover .photoMain {
+  transform: translateY(-50%) rotate(-2deg) scale(1.05);
+}
+.erkekHalf:hover .photoMain {
+  transform: translateY(-50%) rotate(2deg) scale(1.05);
+}
+.half:hover .photoTopRight {
+  transform: rotate(2deg) translateY(-10px) scale(1.04);
+}
+.erkekHalf:hover .photoTopRight {
+  transform: rotate(-2deg) translateY(-10px) scale(1.04);
+}
+.half:hover .photoBottomLeft {
+  transform: rotate(-2deg) translateY(-7px) scale(1.03);
 }
 .erkekHalf:hover .photoBottomLeft {
   transform: rotate(2deg) translateY(-7px) scale(1.03);
 }
 
 @media (max-width: 768px) {
-  .kadinHalf .photoTopRight,
-  .erkekHalf .photoTopRight {
-    width: 110px;
-    height: 150px;
-  }
-  .kadinHalf .photoBottomLeft,
-  .erkekHalf .photoBottomLeft {
+  /* Tüm yüzen fotoğrafları mobilde gizle — içerik üzerine biniyor */
+  .photoLayer {
     display: none;
   }
-  .kadinHalf .photoMain,
-  .erkekHalf .photoMain {
-    width: 150px;
-    height: 210px;
+  /* Center logo gizle */
+  .centerLogo {
+    display: none;
+  }
+  /* Orta çizgiyi gizle */
+  .container::after {
+    display: none;
+  }
+  /* İçerik dikey ortala */
+  .content {
+    padding: 3rem 1.5rem 3.5rem;
+    justify-content: center;
+  }
+  .title {
+    font-size: clamp(3rem, 16vw, 5rem);
+  }
+  .subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 1.5rem;
+  }
+  .button {
+    padding: 0.85rem 2rem;
+    font-size: 0.8rem;
+  }
+  /* Hover efektleri mobilde azalt */
+  .half:hover { flex: 1.1; }
+  .container:has(.half:hover) .half:not(:hover) { flex: 0.9; }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: clamp(2.5rem, 14vw, 4rem);
+  }
+  .content {
+    padding: 2.5rem 1.2rem 3rem;
   }
 }

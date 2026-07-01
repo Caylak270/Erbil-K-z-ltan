@@ -147,3 +147,19 @@ p {
   --card-hover-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(197, 160, 89, 0.14);
   --card-transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* ─── Mobile Global Fixes ─────────────────────────────
+   Kadın hero'daki kenar süsleme fotoğrafları mobilde
+   içerik üzerine taşıdığı için gizliyoruz.
+──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  :root {
+    --kadin-side-photos: none;
+  }
+}
+
+@media (min-width: 769px) {
+  :root {
+    --kadin-side-photos: block;
+  }
+}

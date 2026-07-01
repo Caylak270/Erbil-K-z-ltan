@@ -31,6 +31,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [reviewIndex, setReviewIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const bookingRef = useInView(0.05);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -51,7 +52,11 @@ export default function StudioPage({ gender }: StudioPageProps) {
 
   /* Close mobile menu on resize */
   useEffect(() => {
-    const handleResize = () => { if (window.innerWidth > 768) setMobileMenuOpen(false); };
+    const handleResize = () => {
+      if (window.innerWidth > 768) setMobileMenuOpen(false);
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -219,7 +224,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
       <header className={styles.hero}>
         <div className={styles.heroCanvas}>
           {!isKadin && (
-            <video
+            <video suppressHydrationWarning
               src="/media/erkek/erkek-vid-2026-06-29-at-19.37.17.mp4"
               autoPlay
               muted
@@ -250,6 +255,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
                 border: '1px solid rgba(240,168,176,0.18)',
                 animation: 'kadinPhotoFloat2 12s ease-in-out infinite alternate',
                 zIndex: 0, pointerEvents: 'none',
+                display: 'var(--kadin-side-photos, block)',
               }}>
                 <Image src="/media/kadin/kadin-img-2026-06-29-at-19.41.36.jpeg" alt="" fill style={{ objectFit: 'cover', filter: 'brightness(0.9) saturate(1.1)' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(22,10,15,0.0), rgba(22,10,15,0.35))' }} />
@@ -262,6 +268,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
                 border: '1px solid rgba(240,168,176,0.12)',
                 animation: 'kadinPhotoFloat3 15s ease-in-out infinite alternate-reverse',
                 zIndex: 0, pointerEvents: 'none',
+                display: 'var(--kadin-side-photos, block)',
               }}>
                 <Image src="/media/kadin/kadin-about.jpeg" alt="" fill style={{ objectFit: 'cover', filter: 'brightness(0.88) saturate(1.15)' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(22,10,15,0.0), rgba(22,10,15,0.3))' }} />
@@ -282,6 +289,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
                 border: '1px solid rgba(240,168,176,0.2)',
                 animation: 'kadinPhotoFloat1 10s ease-in-out infinite alternate',
                 zIndex: 0, pointerEvents: 'none',
+                display: 'var(--kadin-side-photos, block)',
               }}>
                 <Image src="/media/kadin/kadin-backstage-sag.jpg" alt="" fill style={{ objectFit: 'cover', filter: 'brightness(0.92) saturate(1.1)' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to left, rgba(22,10,15,0.0), rgba(22,10,15,0.35))' }} />
@@ -294,6 +302,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
                 border: '1px solid rgba(240,168,176,0.1)',
                 animation: 'kadinPhotoFloat3 17s ease-in-out infinite alternate',
                 zIndex: 0, pointerEvents: 'none',
+                display: 'var(--kadin-side-photos, block)',
               }}>
                 <Image src="/media/kadin/kadin-img-2026-06-29-at-19.43.42.jpeg" alt="" fill style={{ objectFit: 'cover', filter: 'brightness(0.9) saturate(1.1)' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to left, rgba(22,10,15,0.0), rgba(22,10,15,0.3))' }} />
@@ -424,7 +433,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
         </div>
 
         {/* 3D Image Gallery — Kadın hero sağ tarafı */}
-        {isKadin && (
+        {isKadin && !isMobile && (
           <div style={{
             position: 'absolute',
             right: '2%',
@@ -777,7 +786,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
 
               {/* Orta video */}
               <div className={styles.videoCard} style={{ aspectRatio: '9/16', maxHeight: '580px' }}>
-                <video
+                <video suppressHydrationWarning
                   src="/media/kadin/kadin-vid-2026-06-29-at-19.40.19.mp4"
                   className={styles.videoCardVideo}
                   autoPlay
@@ -811,7 +820,7 @@ export default function StudioPage({ gender }: StudioPageProps) {
             <div className={styles.videoDuo} style={{ gridTemplateColumns: '1fr', maxWidth: '800px', margin: '0 auto' }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
                 <div className={styles.videoCard} style={{ aspectRatio: '3/4', margin: '0 auto', width: '100%', maxWidth: '640px', boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}>
-                  <video
+                  <video suppressHydrationWarning
                     src="/media/erkek/erkek-vid-2026-06-29-at-19.37.17.mp4"
                     className={styles.videoCardVideo}
                     autoPlay
