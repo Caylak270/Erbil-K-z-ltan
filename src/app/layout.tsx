@@ -129,7 +129,7 @@ const jsonLd = {
         worstRating: "1",
       },
       sameAs: [
-        "https://www.instagram.com/erbil.kzltan/",
+        "https://www.instagram.com/erbil.kiziltan/",
         "https://g.co/kgs/erbilkiziltan",
       ],
     },
@@ -140,7 +140,7 @@ const jsonLd = {
       jobTitle: "Saç ve Styling Sanatçısı",
       worksFor: { "@id": `${BASE_URL}/#salon` },
       url: BASE_URL,
-      sameAs: ["https://www.instagram.com/erbil.kzltan/"],
+      sameAs: ["https://www.instagram.com/erbil.kiziltan/"],
     },
   ],
 };
